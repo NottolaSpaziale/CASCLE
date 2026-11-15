@@ -2,7 +2,7 @@
 
 **Cosmics And Space Capacities Learning Experience** – NASA Space Apps Challenge 2026
 
-Gioca online / Play online: **https://&lt;utente&gt;.github.io/&lt;repository&gt;/** _(da compilare dopo la pubblicazione su GitHub Pages / fill in after publishing)_
+Gioca online / Play online: **https://nottolaspaziale.github.io/CASCLE/**
 
 ---
 
