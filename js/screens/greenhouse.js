@@ -62,7 +62,9 @@ function simulate(dSol) {
     p.water = clamp(p.water, 0, 100);
     // Salute: sale lentamente con acqua nel range giusto, scende se l'acqua è bassa
     if (p.water >= G.waterThreshold) {
-      if (powered) p.health += growth * dSol;
+      // Luce verde = ripresa: recupero accelerato per le piante sotto il 50 %
+      const rec = p.health < G.recoveryBelow ? (light.recovery || 1) : 1;
+      if (powered) p.health += growth * rec * dSol;
     } else {
       p.health -= G.decay * (1 - p.water / G.waterThreshold) * dSol;
     }

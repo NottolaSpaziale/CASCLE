@@ -61,7 +61,7 @@ try {
   pg = await open('?sol=27'); await pg.evaluate(() => game.setSpeed(10));
   const st27 = await pg.evaluate(J);
   const t0 = Date.now(); let ph;
-  while (Date.now() - t0 < 45000) { ph = await pg.evaluate(() => game.state.phase); if (ph !== 'playing') break; await sleep(500); }
+  while (Date.now() - t0 < 45000) { ph = await pg.evaluate(() => game.state.phase); if (ph !== 'playing') break; const mb = pg.locator('[data-modal-btn]'); if (await mb.count()) await mb.first().click({ timeout: 1500 }).catch(() => {}); await sleep(500); }
   const t = await pg.locator('#endgame').innerText().catch(() => '');
   ck('win27', ph === 'won' && (await pg.evaluate(() => game.state.sol)) === 28, st27 + ' -> ' + ph + ' ' + t.replace(/\n+/g, ' | ') + ' (' + (Date.now() - t0) + 'ms)');
   for (const vp of [{ width: 1280, height: 720 }, { width: 900, height: 900 }]) {

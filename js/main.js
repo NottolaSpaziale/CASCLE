@@ -10,6 +10,7 @@ import { initEndgame, failMission, winMission, restartMission, checkWin } from '
 import { initModal, showModal, closeModal } from './screens/modal.js';
 import { initEvents, eventsApi } from './events.js';
 import { showBadge, unlockBadge, hasBadge, badgeImage, cropGrowthMultiplier } from './badges.js';
+import { initPowerPanel, powerApi } from './screens/powerpanel.js';
 
 const stage = document.getElementById('stage');
 const scene = document.getElementById('scene');
@@ -42,6 +43,8 @@ applySolParam();
 // Modulo 3: modali, serra, tempesta e coda eventi (dopo ?sol=N per allineare gli eventi)
 initModal(scene);
 initEvents(scene);
+// Modulo 4: notte lunare e pannello energia
+initPowerPanel(scene);
 
 // API pubblica per test/debug e per i moduli futuri
 window.game = {
@@ -74,6 +77,8 @@ window.game = {
   events: eventsApi,
   badges: { show: showBadge, unlock: unlockBadge, has: hasBadge, image: badgeImage, cropGrowthMultiplier },
   modal: { show: showModal, close: closeModal },
+  // Modulo 4: pannello energia (debug: game.power.setAll('eco'), game.power.set('gym', 'max'), game.power.open())
+  power: powerApi,
 };
 
 // Stato sintetico per i test automatici

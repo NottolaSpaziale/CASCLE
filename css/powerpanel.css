@@ -1,0 +1,253 @@
+/* Pannello energia (f3-03 / f3-04) e modale notte lunare (f3-02) */
+
+/* Modale "The 14-Day Lunar Night begins!" (tema azzurro) */
+.theme-night .modal-box { background: #C0F5FC; border-color: #3674BE; color: #3674BE; }
+.theme-night .modal-btn { background: #3674BE; }
+.theme-night .modal-message { margin-bottom: 0; }
+.theme-night .modal-expl { margin-top: 80px; font-size: 26px; }
+
+/* ---------- Schermata pannello ---------- */
+.pp-screen {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  background: #10111F;
+  color: #FFFFFF;
+}
+.pp-inner {
+  position: absolute;
+  inset: 14px;
+  background: #1E1F3B;
+}
+.pp-page { position: absolute; inset: 0; }
+.pp-page.hidden, .pp-screen.hidden, .pp-nav.hidden { display: none; }
+
+.pp-title {
+  position: absolute;
+  left: 48px;
+  top: 30px;
+  font-size: 32px;
+  font-weight: 600;
+  color: #8FE3C8;
+}
+.pp-sub {
+  position: absolute;
+  left: 48px;
+  top: 72px;
+  font-size: 22px;
+  color: #B8B6D8;
+}
+
+/* Righe con slider */
+.pp-rows {
+  position: absolute;
+  left: 36px;
+  top: 116px;
+  width: 586px;
+  display: flex;
+  flex-direction: column;
+}
+.pp-row { height: 106px; padding-top: 6px; }
+.pp-row.compact { height: 64.5px; padding-top: 4px; }
+.pp-row-head { display: flex; justify-content: space-between; align-items: flex-start; }
+.pp-name { font-size: 18px; font-weight: 600; line-height: 22px; }
+.pp-desc { font-size: 14px; color: #B8B6D8; line-height: 18px; }
+.pp-cost { font-size: 16px; font-weight: 600; color: #F06B6B; text-align: right; line-height: 20px; }
+.pp-idle { display: block; font-size: 11px; font-weight: 400; color: #B8B6D8; }
+.pp-idle:empty { display: none; }
+.pp-row.compact .pp-cost { display: flex; gap: 8px; align-items: baseline; }
+.pp-row.is-off .pp-cost-val { color: #8E8CB0; }
+
+.pp-ticks { display: flex; justify-content: space-between; margin: 6px 0 10px; }
+.pp-row.compact .pp-ticks { margin: 0 0 3px; }
+.pp-ticks button {
+  border: none;
+  background: none;
+  padding: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #C8C6E6;
+}
+.pp-ticks button.active { color: #8FE3C8; }
+.pp-ticks button.blocked { color: #5D5B80; text-decoration: line-through; }
+.pp-ticks button:disabled { cursor: default; }
+
+/* Slider a 3 stop: fill viola fino al livello (--p) */
+.pp-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 20px;
+  margin: 0;
+  border-radius: 10px;
+  background: linear-gradient(to right, #B9A3F5 var(--p, 50%), #34355E var(--p, 50%));
+  cursor: pointer;
+}
+.pp-row.compact .pp-slider { height: 13px; }
+.pp-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #E4DAFF;
+  border: 3px solid #7E6BC4;
+}
+.pp-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #E4DAFF;
+  border: 3px solid #7E6BC4;
+}
+.pp-slider:focus-visible { outline: 2px solid #8FE3C8; outline-offset: 3px; }
+/* EASY o sistema fisso: slider visibile ma bloccato */
+.pp-row.locked .pp-slider { cursor: not-allowed; opacity: 0.8; }
+.pp-row.locked .pp-slider::-webkit-slider-thumb { background: #8E8CB0; border-color: #5D5B80; }
+.pp-row.locked .pp-slider::-moz-range-thumb { background: #8E8CB0; border-color: #5D5B80; }
+
+/* Card info live (pagina 1) */
+.pp-cards {
+  position: absolute;
+  left: 650px;
+  top: 82px;
+  width: 436px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.pp-card {
+  height: 104px;
+  padding: 10px 19px;
+  background: #25264A;
+  border-radius: 4px;
+}
+.pp-card-label { font-size: 16px; font-weight: 600; color: #C8C6E6; }
+.pp-card-value { font-size: 34px; font-weight: 800; line-height: 42px; }
+.pp-card-sub { font-size: 15px; color: #C8C6E6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.c-green { color: #6EE08A; }
+.c-yellow { color: #F5C451; }
+.c-red { color: #F06B6B; }
+
+/* Switch globale TUTTO MAX / ECO / OFF (pagina 2) */
+.pp-global {
+  position: absolute;
+  left: 806px;
+  top: 96px;
+  width: 208px;
+  height: 470px;
+  border-radius: 104px;
+  background: #34355E;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 26px 0 16px;
+}
+.pp-global-label {
+  position: absolute;
+  top: -24px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #B8B6D8;
+  letter-spacing: 1px;
+}
+.pp-global button {
+  width: 170px;
+  height: 130px;
+  border: none;
+  border-radius: 60px;
+  background: transparent;
+  color: #A9A7CF;
+  font-size: 54px;
+  font-weight: 800;
+}
+.pp-global button:hover { background: rgba(185, 163, 245, 0.25); }
+.pp-global button.active { background: #B9A3F5; color: #1E1F3B; }
+.pp-mini {
+  position: absolute;
+  left: 650px;
+  top: 590px;
+  width: 520px;
+  font-size: 15px;
+  color: #C8C6E6;
+  text-align: center;
+  line-height: 20px;
+}
+
+/* Switch difficoltà EASY / HARD */
+.pp-mode {
+  position: absolute;
+  left: 650px;
+  top: 26px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #B8B6D8;
+}
+.pp-mode button {
+  min-width: 78px;
+  height: 36px;
+  border: 2px solid #7E6BC4;
+  border-radius: 18px;
+  background: transparent;
+  color: #C8C6E6;
+  font-size: 15px;
+  font-weight: 800;
+}
+.pp-mode button.active { background: #B9A3F5; border-color: #B9A3F5; color: #1E1F3B; }
+
+/* Suggerimento / avvisi */
+.pp-hint {
+  position: absolute;
+  left: 48px;
+  bottom: 8px;
+  width: 580px;
+  font-size: 13px;
+  line-height: 16px;
+  color: #B8B6D8;
+}
+.pp-hint.warn { color: #F5C451; font-weight: 600; }
+
+/* BACK / NEXT PAGE */
+.pp-nav {
+  position: absolute;
+  right: 10px;
+  width: 120px;
+  height: 77px;
+  border: none;
+  border-radius: 20px;
+  background: #B9A3F5;
+  color: #1E1F3B;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 24px;
+}
+.pp-nav:hover { background: #C9B8F8; }
+.pp-back { top: 10px; }
+.pp-next { bottom: 10px; }
+
+/* ---------- Tempesta: ACTIVATE SHIELDS disabilitato se Radiation Shield è OFF ---------- */
+.storm-col { position: relative; }
+.storm-col .modal-btn:disabled { background: #9A9A9A; cursor: not-allowed; filter: none; }
+.storm-shield-off {
+  position: absolute;
+  bottom: -23px;
+  left: 0;
+  right: 0;
+  font-size: 16px !important;
+  line-height: 20px !important;
+  font-weight: 800;
+  color: #B81F24 !important;
+}
+.storm-shield-off.hidden { display: none; }
+
+/* ---------- Vittoria: badge ottenuti ---------- */
+.endgame-badges { display: flex; gap: 24px; justify-content: center; }
+.endgame-badges:empty { display: none; }
+.endgame-badge { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.endgame-badge img { width: 110px; height: 110px; object-fit: contain; }
+.endgame-badge figcaption { font-size: 15px; font-weight: 600; color: #2E5E0E; }

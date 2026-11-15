@@ -65,6 +65,11 @@ export const CONFIG = {
     { id: 'restroom',        name: 'Restroom and cleaning',      group: 'baseRooms',  ECO: 1,  MAX: 2 },
   ],
   powerTotals: { ECO: 56, MAX: 112 },
+  // Stanze della mappa che in ECO consumano solo se occupate da un astronauta (§5.4, §8.3)
+  powerOccupancy: {
+    labs: ['labs'], medical: ['medical'], gym: ['gym'], galley: ['galley'],
+    cabins: ['cabin1', 'cabin2', 'cabin3', 'cabin4'], restroom: ['restroom'],
+  },
   defaultPowerLevel: 'ECO',
 
   // --- Stanze della mappa (ui-spec "Mappa base") ---
@@ -139,11 +144,12 @@ export const CONFIG = {
     decay: 15,                   // salute persa con acqua a zero (proporzionale alla carenza)
     eventStartHealth: [15, 30],  // salute delle piante quando scatta l'evento
     eventStartWater: [5, 20],    // acqua delle piante quando scatta l'evento
+    recoveryBelow: 50,           // la luce verde accelera il recupero delle piante sotto questa salute
     resolveHealth: 50,           // evento risolto con plant health >= 50 % e acqua sopra soglia
-    // Luci: blu = crescita base (foglie e fusti), rosso = bonus cibo, verde = neutro
+    // Luci: blu = crescita base (foglie e fusti), rosso = bonus cibo, verde = ripresa (recovery x1.5 sotto il 50 %)
     lights: {
       red:   { color: '#E03A3A', growth: 1.0, foodBonus: 4 },  // foodBonus: hunger +4/Sol a ogni astronauta
-      green: { color: '#A6F06A', growth: 1.0, foodBonus: 0 },
+      green: { color: '#A6F06A', growth: 1.0, foodBonus: 0, recovery: 1.5 },
       blue:  { color: '#3B4FE0', growth: 1.15, foodBonus: 0 },
     },
     defaultLight: 'red',
@@ -185,6 +191,13 @@ export const CONFIG = {
       fact: 'Fun fact: when CMEs reach Earth they can paint the night sky with beautiful auroras!',
       button: 'OK',
     },
+    lunarNight: {
+      title: 'The 14-Day Lunar Night begins!',
+      term: 'Battery Backup Activated:',
+      text: "The sun has set over the Moon's horizon, and our solar panels have stopped receiving light. The base now depends entirely on stored energy reserves to survive the next 14 days of total darkness.",
+      button: 'MANAGE ENERGY',
+    },
+    shieldOff: 'Radiation Shield is OFF in the power panel',
     donkiQuiet: {
       title: 'DONKI SPACE WEATHER',
       message: 'No dangerous solar activity detected right now.',

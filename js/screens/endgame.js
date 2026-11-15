@@ -3,7 +3,11 @@ import { CONFIG } from '../config.js';
 import { state, resetState } from '../state.js';
 import { on, emit, resume } from '../loop.js';
 
-let scene, overlay, titleEl, msgEl, btnEl;
+let scene, overlay, titleEl, msgEl, btnEl, badgesEl;
+// Sequenza prima della vittoria (Modulo 4: badge Power e 28 Sol); riceve la callback finale
+let winSequence = null;
+let winPending = false;
+export function setWinSequence(fn) { winSequence = typeof fn === 'function' ? fn : null; }
 
 // Crea l'overlay e registra i controlli sul bus
 export function initEndgame(sceneEl, stageEl) {
@@ -15,12 +19,14 @@ export function initEndgame(sceneEl, stageEl) {
     <div class="endgame-modal" role="dialog" aria-modal="true">
       <h1 class="endgame-title"></h1>
       <p class="endgame-msg"></p>
+      <div class="endgame-badges"></div>
       <button type="button" class="btn-primary endgame-btn">START AGAIN</button>
     </div>`;
   stageEl.appendChild(overlay);
   titleEl = overlay.querySelector('.endgame-title');
   msgEl = overlay.querySelector('.endgame-msg');
   btnEl = overlay.querySelector('.endgame-btn');
+  badgesEl = overlay.querySelector('.endgame-badges');
   btnEl.addEventListener('click', restartMission);
 
   on('tick', checkFail);
@@ -54,8 +60,12 @@ export function checkFail() {
 export function checkWin() {
   if (state.phase !== 'playing') return;
   if (state.sol >= CONFIG.mission.winSol) {
-    if (state.power > 0) winMission();
-    else failMission('power');
+    if (state.power <= 0) { failMission('power'); return; }
+    if (winPending) return;
+    if (winSequence) {
+      winPending = true;
+      winSequence(() => { winPending = false; winMission(); });
+    } else winMission();
   }
 }
 
@@ -72,18 +82,22 @@ export function failMission(cause = 'default', extra = {}) {
   emit('update');
 }
 
-// Vittoria: schermata semplice (i badge arriveranno nel Modulo 4)
+// Vittoria: messaggio + badge ottenuti
 export function winMission() {
   if (state.phase !== 'playing') return;
   state.phase = 'won';
   const msg = `${CONFIG.winText.message} Power left: ${Math.round(state.power)} / ${CONFIG.resources.powerMax}.`;
   showOverlay('won', CONFIG.winText.title, msg, 'START AGAIN');
+  // Badge ottenuti nella partita
+  badgesEl.innerHTML = (state.badges || []).filter(id => CONFIG.badgeImages[id]).map(id =>
+    `<figure class="endgame-badge"><img src="${CONFIG.badgeImages[id].on}" alt="${CONFIG.badges[id].name} badge" draggable="false"><figcaption>${CONFIG.badges[id].name}</figcaption></figure>`).join('');
   emit('win');
   emit('update');
 }
 
 function showOverlay(kind, title, msg, btn) {
   titleEl.textContent = title;
+  badgesEl.innerHTML = '';
   msgEl.textContent = msg;
   btnEl.textContent = btn;
   overlay.classList.remove('hidden', 'is-failed', 'is-won');
@@ -96,6 +110,7 @@ function showOverlay(kind, title, msg, btn) {
 // START AGAIN: torna al Sol 1 (rimuove ?sol dall'URL)
 export function restartMission() {
   overlay.classList.add('hidden');
+  winPending = false;
   scene.classList.remove('grayscale', 'locked');
   try {
     const url = new URL(window.location.href);

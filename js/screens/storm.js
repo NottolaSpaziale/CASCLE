@@ -8,6 +8,7 @@ import { getMapEl, getRoomEl } from '../map.js';
 import { failMission } from './endgame.js';
 import { showBadge } from '../badges.js';
 import { setGreenhouseFrozen } from './greenhouse.js';
+import { shieldsAvailable } from '../power.js';
 
 const E = CONFIG.events;
 const S = E.solarStorm;
@@ -58,6 +59,7 @@ export function initStorm(scene, opts = {}) {
             <p class="good">Keeps work going without interruption; science research finishes on time with zero lost hours.</p>
             <p class="bad">Consumes heavy <b>battery power -${S.shieldsPowerCost} kW</b> and increases <b>crew radiation exposure risk +${S.shieldsRadiation}%</b></p>
             <button type="button" class="modal-btn" data-storm="shields">ACTIVATE SHIELDS</button>
+            <p class="storm-shield-off hidden">${CONFIG.eventTexts.shieldOff}</p>
           </div>
         </div>
       </div></div>
@@ -99,6 +101,7 @@ export function openStormChoice() {
   screen.classList.remove('hidden');
   timerStart = performance.now();
   fillEl.style.width = '100%';
+  syncShieldsButton();
   const step = () => {
     if (stage !== 'choice') return;
     const left = stormTimeLeft();
@@ -115,6 +118,15 @@ function closeChoice() {
   if (timerRaf) cancelAnimationFrame(timerRaf);
   timerRaf = null;
   screen.classList.add('hidden');
+}
+
+// Radiation Shield OFF nel pannello energia (solo HARD): ACTIVATE SHIELDS disabilitato con nota
+function syncShieldsButton() {
+  const ok = shieldsAvailable();
+  const btn = screen.querySelector('[data-storm="shields"]');
+  btn.disabled = !ok;
+  btn.classList.toggle('is-disabled', !ok);
+  screen.querySelector('.storm-shield-off').classList.toggle('hidden', ok);
 }
 
 // ---------- EVACUATE ----------
@@ -206,6 +218,7 @@ function returnCrew() {
 // ---------- ACTIVATE SHIELDS ----------
 export function activateShields() {
   if (state.phase !== 'playing' || !['idle', 'choice'].includes(stage)) return false;
+  if (!shieldsAvailable()) return false;
   closeChoice();
   state.power = clamp(state.power - S.shieldsPowerCost, 0, CONFIG.resources.powerMax);
   state.shield = clamp(state.shield - E.stormShieldsShieldCost, 0, 100);

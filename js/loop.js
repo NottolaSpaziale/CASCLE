@@ -1,6 +1,7 @@
 // Motore: event bus, tick fisso da 100 ms (guidato da requestAnimationFrame), velocità e pausa
 import { CONFIG } from './config.js';
 import { state, isNight } from './state.js';
+import { dailyConsumption } from './power.js';
 
 // ---------- Event bus ----------
 const listeners = new Map();
@@ -25,16 +26,9 @@ export const onTick = fn => on('tick', fn);       // fn(dSol)
 export const onNewSol = fn => on('newSol', fn);   // fn(sol)
 
 // ---------- Consumi ----------
-// Consumo giornaliero totale (units/Sol) in base a roomPower; applica il bonus del badge Power
+// Consumo giornaliero reale (units/Sol): calcolato da power.js (ECO a presenza, badge Power -10 %)
 export function computeDailyConsumption(s = state) {
-  let total = 0;
-  for (const sys of CONFIG.powerSystems) {
-    const level = sys.fixed || s.roomPower[sys.id] || 'OFF';
-    if (level !== 'OFF') total += sys[level];
-  }
-  const powerBadge = CONFIG.badges.power.effect.energyConsumption;
-  if (s.badges.includes('power')) total *= (1 + powerBadge);
-  return total;
+  return dailyConsumption(s);
 }
 
 // Produzione solare (units/Sol) per il Sol corrente
