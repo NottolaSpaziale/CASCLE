@@ -3,10 +3,15 @@ import { CONFIG } from './config.js';
 import { state } from './state.js';
 import { on, setSpeed, togglePause } from './loop.js';
 
+// Numero con virgola decimale come nel Figma: "84,5" / "0,08" / "89" (interi senza decimali)
+export function fmtNum(v, dec = 1) {
+  const r = Math.round(v * 10 ** dec) / 10 ** dec;
+  return Number.isInteger(r) ? String(r) : r.toFixed(dec).replace('.', ',');
+}
+
 // Formatta una percentuale come nel Figma: "84,5 %" / "89 %"
-export function fmtPct(v) {
-  const r = Math.round(v * 10) / 10;
-  return `${Number.isInteger(r) ? r : r.toFixed(1).replace('.', ',')} %`;
+export function fmtPct(v, dec = 1) {
+  return `${fmtNum(v, dec)} %`;
 }
 
 // Definizione degli slot visualizzabili

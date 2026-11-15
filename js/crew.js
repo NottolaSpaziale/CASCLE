@@ -214,7 +214,7 @@ function taskText(a) {
   if (!a.task) return `Idle – ${roomName(a.location)}`;
   if (a.task.duration === Infinity) return `${a.task.label} (ongoing)`;
   const h = Math.max(0, a.task.remaining * 24);
-  return `${a.task.label} – ${h >= 1 ? `${h.toFixed(1)} h` : `${Math.ceil(h * 60)} min`} left`;
+  return `${a.task.label} – ${h >= 1 ? `${h.toFixed(1).replace('.', ',')} h` : `${Math.ceil(h * 60)} min`} left`;
 }
 
 let lastTip = '';

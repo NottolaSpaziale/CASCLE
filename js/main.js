@@ -11,6 +11,7 @@ import { initModal, showModal, closeModal } from './screens/modal.js';
 import { initEvents, eventsApi } from './events.js';
 import { showBadge, unlockBadge, hasBadge, badgeImage, cropGrowthMultiplier } from './badges.js';
 import { initPowerPanel, powerApi } from './screens/powerpanel.js';
+import { initTablet, tabletApi } from './screens/tablet.js';
 
 const stage = document.getElementById('stage');
 const scene = document.getElementById('scene');
@@ -45,6 +46,8 @@ initModal(scene);
 initEvents(scene);
 // Modulo 4: notte lunare e pannello energia
 initPowerPanel(scene);
+// Modulo 5: tablet (STATS, TASKS, BADGES, CREW HEALTH)
+initTablet(scene);
 
 // API pubblica per test/debug e per i moduli futuri
 window.game = {
@@ -79,6 +82,8 @@ window.game = {
   modal: { show: showModal, close: closeModal },
   // Modulo 4: pannello energia (debug: game.power.setAll('eco'), game.power.set('gym', 'max'), game.power.open())
   power: powerApi,
+  // Modulo 5: tablet (debug: game.tablet.open('health'), game.tablet.close(), game.tablet.isOpen, game.tablet.tab)
+  tablet: tabletApi,
 };
 
 // Stato sintetico per i test automatici
