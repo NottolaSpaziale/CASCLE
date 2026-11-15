@@ -55,6 +55,9 @@ export function resetState(opts = {}) {
       CONFIG.powerSystems.map(s => [s.id, s.fixed || CONFIG.defaultPowerLevel])
     ),
 
+    // Serra: irrigazione automatica attiva mentre un astronauta fa 'Manage greenhouse' (Modulo 2)
+    greenhouse: { autoWater: false, caretaker: null },
+
     badges: [],                  // id dei badge sbloccati
     events: {
       schedule: {

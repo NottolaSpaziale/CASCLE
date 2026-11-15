@@ -3,6 +3,9 @@ import { CONFIG } from './config.js';
 import { state, resetState, isNight } from './state.js';
 import * as loop from './loop.js';
 import { initHud, setHudMode } from './hud.js';
+import { initMap, getRoomEl, roomCenter } from './map.js';
+import * as crew from './crew.js';
+import { ACTIONS, ROOM_GROUPS } from './actions.js';
 import { initEndgame, failMission, winMission, restartMission, checkWin } from './screens/endgame.js';
 
 const stage = document.getElementById('stage');
@@ -18,6 +21,8 @@ fitStage();
 
 initHud(document.getElementById('topbar'));
 initEndgame(scene, stage);
+// Mappa ed equipaggio (Modulo 2)
+crew.initCrew(initMap(document.getElementById('map')));
 
 // Parametro debug ?sol=N: parte dal Sol N con risorse coerenti
 function applySolParam() {
@@ -47,6 +52,17 @@ window.game = {
   failMission, winMission, restartMission,
   reset: restartMission,
   resetState,
+  // Modulo 2: equipaggio e mappa
+  crew: {
+    assign: crew.assignAction,
+    cancel: crew.cancelTask,
+    select: crew.openRadial,
+    closeMenu: crew.closeMenu,
+    get selected() { return crew.getSelected(); },
+    actions: ACTIONS,
+    groups: ROOM_GROUPS,
+  },
+  map: { getRoomEl, roomCenter },
 };
 
 // Stato sintetico per i test automatici

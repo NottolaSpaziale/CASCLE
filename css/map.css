@@ -1,0 +1,210 @@
+/* Mappa della base ed equipaggio (Modulo 2) - riferimento stage 1280x720 */
+
+/* Il raster 3840x2160 occupa nello stage la stessa area del Figma */
+#map {
+  position: absolute;
+  left: 94px;
+  top: 84px;
+  width: 1092px;
+  height: 614px;
+  border: none;
+  border-radius: 0;
+}
+.map-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+/* Aree stanza cliccabili */
+.room-area {
+  position: absolute;
+  border-radius: 28px;
+  cursor: pointer;
+  z-index: 1;
+  transition: background-color 0.15s;
+}
+.room-area:hover { background: rgba(255, 255, 255, 0.12); }
+
+/* Etichette bianche bold sopra/sotto le stanze */
+.room-label {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: 10px;
+  font-weight: 800;
+  color: #FFFFFF;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Cartello del bunker (vettoriale nel Figma) */
+.bunker-sign {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 46px;
+  height: 46px;
+  padding-top: 6px;
+  border: 2px solid #2A2550;
+  border-radius: 6px;
+  background: #E6E3F5;
+  box-shadow: inset 0 0 0 2px #BCB3E0;
+  color: #1A1B33;
+  font-size: 9px;
+  font-weight: 800;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+  z-index: 1;
+}
+.bunker-dot {
+  width: 8px;
+  height: 8px;
+  border: 2px solid #1A1B33;
+  border-radius: 50%;
+}
+
+/* ---------- Astronauti ---------- */
+.crew-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+.crew-icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 60px;
+  height: 60px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  pointer-events: auto;
+  /* Scorrimento fluido tra un tick di simulazione e il successivo */
+  transition: transform 0.1s linear, box-shadow 0.15s;
+  will-change: transform;
+}
+.crew-layer.no-anim .crew-icon { transition: none; }
+.crew-icon img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.crew-icon:hover { box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.7); }
+.crew-icon.selected { box-shadow: 0 0 0 3px #FFFFFF, 0 0 14px 4px #B9A3F5; z-index: 2; }
+/* Durante il menu radiale il viso è mostrato al centro del menu */
+.crew-icon.in-radial { opacity: 0; }
+.crew-icon:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 2px; }
+
+/* Indicatore bisogni: arancio = attenzione, rosso = critico */
+.status-dot {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #FFFFFF;
+  border-radius: 50%;
+  display: none;
+}
+.status-dot.warn { display: block; background: #F2A65A; }
+.status-dot.critical { display: block; background: #E04848; animation: dot-pulse 0.8s ease-in-out infinite alternate; }
+@keyframes dot-pulse { from { transform: scale(1); } to { transform: scale(1.25); } }
+
+/* Tooltip nome / ruolo / attività */
+.crew-tooltip {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  padding: 6px 10px;
+  border: 2px solid #4B3C9E;
+  border-radius: 10px;
+  background: #CFC3F0;
+  color: #1A1B33;
+  font-size: 11px;
+  line-height: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 9;
+}
+.crew-tooltip b { font-weight: 800; font-size: 12px; }
+.crew-tooltip em { font-style: normal; color: #4A3A9E; font-weight: 600; }
+
+/* ---------- Menu radiale e lista azioni ---------- */
+.crew-menu {
+  position: absolute;
+  z-index: 8;
+}
+.crew-menu.radial { width: 0; height: 0; }
+.menu-avatar {
+  position: absolute;
+  left: -32px;
+  top: -32px;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px #FFFFFF, 0 0 14px 4px #B9A3F5;
+  pointer-events: none;
+}
+.pill {
+  height: 22px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 11px;
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(10, 8, 30, 0.45);
+}
+.pill-room {
+  position: absolute;
+  background: #7E6BC4;
+}
+.pill-room:hover { background: #9483D6; }
+.pill-room.left   { transform: translate(-100%, -50%); }
+.pill-room.right  { transform: translate(0, -50%); }
+.pill-room.center { transform: translate(-50%, -50%); }
+
+.crew-menu.actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(26, 27, 51, 0.92);
+}
+.pill-group { background: #8C7FD0; }
+.pill-group:hover { background: #9E92DC; }
+.action-col {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.pill-action { background: #4A3A9E; text-align: center; }
+.pill-action:hover { background: #5E4CC0; }
+.pill-action.active { box-shadow: 0 0 0 2px #FFFFFF; }
+.pill-action.spec::after { content: ' \2605'; color: #FFC98A; }
+
+/* Nota in basso a sinistra */
+.crew-note {
+  position: absolute;
+  left: 24px;
+  bottom: 18px;
+  font-size: 17px;
+  font-weight: 400;
+  color: #FFFFFF;
+  pointer-events: none;
+  z-index: 3;
+}
