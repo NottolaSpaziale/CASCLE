@@ -119,10 +119,80 @@ export const CONFIG = {
     solarStorm: { baseSol: 8, minSol: 7, maxSol: 9, timerSeconds: 30, shieldsPowerCost: 30, shieldsRadiation: 15, bunkerSkipSols: 1 },
     lunarNight: { startSol: 14, endSol: 28 },
     minorFlareChancePerSol: 0.2, // FLR/CME casuali a basso rischio (solo avviso)
+    // Modulo 3: effetti tempesta
+    stormShieldsShieldCost: 5,     // con gli scudi magnetici lo shield della base si consuma poco
+    stormCollapseSeconds: 4,       // durata (s reali) del crollo di salute a timer scaduto
+    bunkerJumpSeconds: 3,          // durata (s reali) dell'animazione del salto di 1 Sol nel bunker
+    bunkerWalkTimeoutSeconds: 15,  // oltre questo tempo la crew viene teletrasportata nel bunker
   },
 
   // --- Serra (piano "Decisioni" 5) ---
-  greenhouse: { waterCostPct: 2, powerCost: 5, cooldownSol: 0.25, plants: 6 },
+  greenhouse: {
+    waterCostPct: 2, powerCost: 5, cooldownSol: 0.25, plants: 6,
+    // Simulazione graduale (valori per Sol)
+    waterThreshold: 30,          // sotto questa soglia la pianta soffre
+    waterTarget: 85,             // livello mantenuto dal sistema Veggie (fuori evento) o dalla biologa
+    systemRefill: 60,            // ricarica automatica del sistema Veggie fuori evento
+    autoWaterRefill: 150,        // ricarica con la biologa che gestisce la serra
+    eventDrain: 60,              // perdita d'acqua durante l'evento
+    growth: 90,                  // salute recuperata con acqua nel range giusto
+    decay: 15,                   // salute persa con acqua a zero (proporzionale alla carenza)
+    eventStartHealth: [15, 30],  // salute delle piante quando scatta l'evento
+    eventStartWater: [5, 20],    // acqua delle piante quando scatta l'evento
+    resolveHealth: 50,           // evento risolto con plant health >= 50 % e acqua sopra soglia
+    // Luci: blu = crescita base (foglie e fusti), rosso = bonus cibo, verde = neutro
+    lights: {
+      red:   { color: '#E03A3A', growth: 1.0, foodBonus: 4 },  // foodBonus: hunger +4/Sol a ogni astronauta
+      green: { color: '#A6F06A', growth: 1.0, foodBonus: 0 },
+      blue:  { color: '#3B4FE0', growth: 1.15, foodBonus: 0 },
+    },
+    defaultLight: 'red',
+  },
+
+  // --- Testi eventi (verbatim dove presenti in doc/Figma; FLR/CME kid-friendly da §7.3 e §10.3) ---
+  eventTexts: {
+    greenhouse: {
+      title: 'WARNING!',
+      message: "NASA's Veggie system sensors detect low water levels in our Lunar Greenhouse!",
+      term: 'Plant Dehydration (Low Humidity):',
+      text: 'In reduced gravity, water does not flow like it does on Earth, and roots can dry out quickly. Without the right moisture in their special "Plant Pillows," our crops will wilt and stop producing fresh food and oxygen for the crew.',
+      button: 'SOLVE',
+    },
+    storm: {
+      title: 'WARNING!',
+      message: "NASA's DONKI satellite system detects a Solar Flare heading towards our Lunar Outpost!",
+      term: 'Solar Energetic Particles (SEPs):',
+      text: 'These are particles (especially protons) launched at crazy speeds. They are the greatest danger for astronauts because they can pass through materials, damage human DNA, and ruin equipment.',
+      button: 'SOLVE',
+      timerLabel: 'Time left to make a choice',
+      exposed: 'The crew is exposed to the solar storm!',
+      shieldsToast: 'Magnetic shields active: -30 kW battery power, +15% crew radiation exposure.',
+      bunkerBanner: 'Crew sheltering in the bunker: research and greenhouse paused for 24 hours',
+    },
+    flr: {
+      title: 'SPACE WEATHER WATCH – ALERT LEVEL 1',
+      message: "NASA's DONKI system detected a Solar Flare (FLR)!",
+      term: 'What is it?',
+      text: "A solar flare is a sudden, super-bright flash of energy from the Sun. Its light reaches Earth's distance in about 8 minutes and 20 seconds! No immediate danger that requires entering the shelter. Keep watching the systems.",
+      fact: 'Fun fact: in September 1859 a huge solar storm made telegraph networks on Earth spark and stop working!',
+      button: 'OK',
+    },
+    cme: {
+      title: 'SPACE WEATHER CAUTION – ALERT LEVEL 2',
+      message: "NASA's DONKI system detected a Coronal Mass Ejection (CME)!",
+      term: 'What is it?',
+      text: 'A CME is a giant cloud of hot gas thrown out by the Sun. It can travel at hundreds or even thousands of kilometres per second! Radiation may rise in space, so astronauts working outside should return to the habitat.',
+      fact: 'Fun fact: when CMEs reach Earth they can paint the night sky with beautiful auroras!',
+      button: 'OK',
+    },
+    donkiQuiet: {
+      title: 'DONKI SPACE WEATHER',
+      message: 'No dangerous solar activity detected right now.',
+      term: 'Did you know?',
+      text: 'NASA\'s DONKI database tracks solar flares (FLR), coronal mass ejections (CME) and solar energetic particles (SEP). SEPs can pass through materials and damage DNA and electronics, so the crew always keeps an eye on space weather!',
+      button: 'OK',
+    },
+  },
 
   // --- Messaggi di sconfitta (§9.2) ---
   failMessages: {
@@ -143,6 +213,13 @@ export const CONFIG = {
   },
 
   // --- Badge (§9.3, testi verbatim da ui-spec e screenshot Figma) ---
+  // Immagini in assets/badges (on = sbloccato, off = bloccato; greenhouse-off = on in grigio via CSS)
+  badgeImages: {
+    greenhouse: { on: 'assets/badges/greenhouse-on.svg', off: 'assets/badges/greenhouse-on.svg', offGray: true },
+    solar:      { on: 'assets/badges/sun-on.svg',        off: 'assets/badges/sun-off.svg' },
+    power:      { on: 'assets/badges/power-on.svg',      off: 'assets/badges/power-off.svg' },
+    sol28:      { on: 'assets/badges/sol28-on.svg',      off: 'assets/badges/sol28-off.svg' },
+  },
   badges: {
     greenhouse: {
       id: 'greenhouse',

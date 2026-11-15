@@ -7,6 +7,9 @@ import { initMap, getRoomEl, roomCenter } from './map.js';
 import * as crew from './crew.js';
 import { ACTIONS, ROOM_GROUPS } from './actions.js';
 import { initEndgame, failMission, winMission, restartMission, checkWin } from './screens/endgame.js';
+import { initModal, showModal, closeModal } from './screens/modal.js';
+import { initEvents, eventsApi } from './events.js';
+import { showBadge, unlockBadge, hasBadge, badgeImage, cropGrowthMultiplier } from './badges.js';
 
 const stage = document.getElementById('stage');
 const scene = document.getElementById('scene');
@@ -36,6 +39,10 @@ function applySolParam() {
 }
 applySolParam();
 
+// Modulo 3: modali, serra, tempesta e coda eventi (dopo ?sol=N per allineare gli eventi)
+initModal(scene);
+initEvents(scene);
+
 // API pubblica per test/debug e per i moduli futuri
 window.game = {
   state,
@@ -63,6 +70,10 @@ window.game = {
     groups: ROOM_GROUPS,
   },
   map: { getRoomEl, roomCenter },
+  // Modulo 3: eventi (debug: game.events.trigger('greenhouse'|'storm'|'flr'|'cme')), badge, modali
+  events: eventsApi,
+  badges: { show: showBadge, unlock: unlockBadge, has: hasBadge, image: badgeImage, cropGrowthMultiplier },
+  modal: { show: showModal, close: closeModal },
 };
 
 // Stato sintetico per i test automatici

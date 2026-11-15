@@ -16,7 +16,8 @@ Struttura: `index.html`, `css/`, `js/`, `assets/` (img/, badges/).
    - Ogni pianta ha un livello acqua che cala nel tempo; plant health sale lentamente se l'acqua è nel range giusto, scende se è bassa.
    - Annaffiatura manuale: riempie le barre acqua (−2 % acqua base, −5 units power); cooldown 1/4 di Sol (bottone grigio).
    - In alternativa si manda **Maya (biologa)** con l'azione "Manage greenhouse": irrigazione automatica finché resta lì, ma la sua **fatigue** sale; il giocatore bilancia lavoro della crew vs intervento manuale.
-6. Luci serra: sfondo serra = colore luce (rosso/verde/blu, come prototipo); blu = crescita base, rosso = bonus cibo, verde = nessun bonus ma nessun malus.
+6. Luci serra: sfondo serra = colore luce (rosso/verde/blu, come prototipo); blu = crescita (×1.15), rosso = bonus cibo (riduce la fame della crew), **verde = ripresa della pianta** (accelera il recupero di salute delle piante malate/sotto il 50 %).
+6b. Scudi magnetici: consumano units/day solo se il sistema "Radiation Shield" nel pannello energia è su ECO o MAX. Se è OFF (possibile in HARD) non consuma nulla, ma durante una tempesta ACTIVATE SHIELDS è disabilitato con la nota "Radiation Shield is OFF in the power panel": resta solo EVACUATE (o il timer).
 7. Eventi: serra triggerata al Sol 4 (± random 3–5), tempesta SEP al Sol 8 (± 7–9); FLR/CME casuali a basso rischio negli altri Sol (solo avviso).
 8. Plant health in top bar solo nella schermata serra. Tab tablet: "Badges". Titolo salute: "CREW HEALTH".
 9. Debug/demo: parametro URL `?sol=N` per saltare al Sol N; velocità 10x per i giudici (28 Sol ≈ 14 min).

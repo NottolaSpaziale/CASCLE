@@ -30,6 +30,7 @@ Vista dall'alto, 2 file di stanze esagonali collegate da un corridoio centrale.
 ## Sol 1 – Gestione astronauti  [f0-sol1-pagina.png]
 Sorgente vettoriale: `docs/C.A.S.C.L.E. - prototype (1).svg` (7038×5757). Contiene un'immagine raster incorporata 3840×2160 (mappa base, da estrarre dal base64 `image0_0_1` → `assets/img/map.png`) e le 4 icone-viso vettoriali (da ritagliare in SVG separati `assets/img/crew-*.svg`).
 - Astronauti = **icone-viso circolari** (bordo viola, sfondo lilla), senza corpo: si spostano scivolando da stanza a stanza.
+- Chi è chi (rif. `docs/figma/f4-03-tasks-avatar-ruoli.png`, avatar a figura intera per il tablet): Astrid = bionda (Systems & Power Engineer); Hannah = capelli scuri lisci (Flight Surgeon); Luana = capelli ricci lunghi (Lunar Geologist); Maya = treccine, pelle più scura (Space Biologist).
 - Posizioni iniziali (Sol 1): Astrid (bionda) in Life Support; Hannah in Medical bay; Maya e Luana nei Labs.
 - Menu radiale: attorno all'icona selezionata, pillole viola `#7E6BC4` testo bianco: Restroom, Cabin, Life Support System, Galley & Kitchen, Communications Center, Greenhouse, Medical Bay, Gym.
 - Lista azioni: pillola stanza (lilla `#8C7FD0`) a sinistra + colonna di pillole azioni (viola scuro `#4A3A9E`) a destra; testi come §5.1 della doc.

@@ -1,0 +1,401 @@
+/* Modulo 3: modali, serra, tempesta, icone evento - riferimento stage 1280x720 */
+
+/* ---------- Strato modali ---------- */
+.modal-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  background: rgba(15, 16, 36, 0.3);
+}
+.modal { position: absolute; inset: 0; color: #1A1B33; }
+
+/* Cornice lilla + box colorato (warning / info / scelta tempesta) */
+.modal-frame {
+  position: absolute;
+  left: 96px;
+  top: 86px;
+  width: 1088px;
+  height: 600px;
+  padding: 30px;
+  background: #CFC3F0;
+  border: 3px solid #4B3C9E;
+  border-radius: 22px;
+}
+.modal-box {
+  width: 100%;
+  height: 100%;
+  padding: 36px 40px 20px;
+  border: 3px solid;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+}
+.modal-text { text-align: left; }
+.modal-title { font-size: 27px; font-weight: 800; line-height: 32px; }
+.modal-message { font-size: 27px; font-weight: 400; line-height: 32px; margin-bottom: 14px; }
+.modal-expl { font-size: 25px; line-height: 32px; }
+.modal-expl b { font-weight: 800; }
+.modal-fact { font-size: 22px; line-height: 30px; margin-top: 14px; font-style: italic; }
+
+.modal-btn {
+  align-self: center;
+  margin-top: auto;
+  min-width: 298px;
+  height: 77px;
+  padding: 0 30px;
+  border: none;
+  border-radius: 18px;
+  color: #FFFFFF;
+  font-size: 20px;
+  font-weight: 800;
+  transition: filter 0.15s;
+}
+.modal-btn:hover { filter: brightness(1.1); }
+.modal-btn:focus-visible { outline: 3px solid #1A1B33; outline-offset: 3px; }
+
+/* Temi */
+.theme-green .modal-box   { background: #D5F7EE; border-color: #3CBFA0; color: #0E8F6A; }
+.theme-green .modal-btn   { background: #0E8F6A; }
+.theme-red .modal-box     { background: #F7D6D6; border-color: #B81F24; color: #B81F24; }
+.theme-red .modal-btn     { background: #B81F24; }
+.theme-info .modal-box    { background: #EEE9FF; border-color: #4B3C9E; color: #2B2366; }
+.theme-info .modal-btn    { background: #4A3A9E; }
+.theme-caution .modal-box { background: #FDEBD3; border-color: #E08A1E; color: #8A4B00; }
+.theme-caution .modal-btn { background: #D46F00; }
+
+/* ---------- Modale badge ---------- */
+.modal-badge .badge-panel {
+  position: absolute;
+  left: 176px;
+  top: 112px;
+  width: 928px;
+  min-height: 518px;
+  padding: 24px 34px 26px;
+  border: 3px solid;
+  border-radius: 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.badge-title { font-size: 28px; font-weight: 800; line-height: 34px; }
+.badge-unlock { font-size: 21px; line-height: 29px; margin: 22px 30px 26px; }
+.badge-row { flex: 1; display: flex; align-items: center; gap: 20px; width: 100%; }
+.badge-img { width: 230px; height: 230px; flex: none; margin: -30px -20px -30px -20px; }
+.badge-col { flex: 1; font-size: 21px; line-height: 28px; }
+.badge-bonus { margin-bottom: 14px; }
+.badge-bonus b, .role-model { font-weight: 800; }
+.modal-badge .modal-btn {
+  margin-top: 20px;
+  min-width: 298px;
+  height: 62px;
+  border-radius: 16px;
+  font-size: 24px;
+}
+.badge-off-gray { filter: grayscale(1) opacity(0.7); }
+
+.modal-badge.theme-green .badge-panel { background: #E8F5D0; border-color: #6B8E23; }
+.modal-badge.theme-green .badge-title,
+.modal-badge.theme-green .badge-bonus b,
+.modal-badge.theme-green .role-model { color: #2E5E0E; }
+.modal-badge.theme-green .modal-btn { background: #6B8A2E; }
+.modal-badge.theme-orange .badge-panel { background: #F7D9B9; border-color: #F08A10; }
+.modal-badge.theme-orange .badge-title,
+.modal-badge.theme-orange .badge-bonus b,
+.modal-badge.theme-orange .role-model { color: #D9730D; }
+.modal-badge.theme-orange .modal-btn { background: #D46F00; }
+
+/* ---------- Icona evento "!" sulla mappa ---------- */
+.event-alert {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  transform: translate(-50%, -50%);
+  border: 3px solid #FFFFFF;
+  border-radius: 50%;
+  background: #F2A65A;
+  color: #6B3300;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 38px;
+  z-index: 6;
+  box-shadow: 0 0 0 0 rgba(242, 166, 90, 0.8);
+  animation: alert-pulse 1.1s ease-out infinite;
+}
+.event-alert:hover { background: #F7B97A; }
+.event-alert.ongoing { width: 38px; height: 38px; font-size: 22px; line-height: 30px; animation-duration: 2.2s; }
+@keyframes alert-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(242, 166, 90, 0.8); }
+  100% { box-shadow: 0 0 0 16px rgba(242, 166, 90, 0); }
+}
+
+/* Stanza in pausa (bunker attivo): sbiancata con orologio */
+.room-paused {
+  position: absolute;
+  z-index: 4;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.room-paused svg { width: 92px; height: 92px; }
+
+/* Banner e toast */
+.storm-banner {
+  position: absolute;
+  left: 50%;
+  top: 362px;
+  transform: translateX(-50%);
+  padding: 8px 18px;
+  border-radius: 10px;
+  background: rgba(26, 27, 51, 0.9);
+  border: 2px solid #F2A65A;
+  color: #FFC98A;
+  font-size: 15px;
+  font-weight: 800;
+  white-space: nowrap;
+  z-index: 3;
+  pointer-events: none;
+}
+.game-toast {
+  position: absolute;
+  left: 50%;
+  bottom: 40px;
+  transform: translateX(-50%);
+  max-width: 900px;
+  padding: 12px 22px;
+  border-radius: 14px;
+  background: #4A3A9E;
+  border: 2px solid #CFC3F0;
+  color: #FFFFFF;
+  font-size: 17px;
+  font-weight: 600;
+  text-align: center;
+  z-index: 60;
+  pointer-events: none;
+}
+
+/* Timer scaduto: esposizione alla tempesta */
+.storm-exposed {
+  position: absolute;
+  inset: 0;
+  z-index: 55;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(184, 31, 36, 0.35);
+  animation: exposed-flash 0.5s ease-in-out infinite alternate;
+}
+.storm-exposed p {
+  padding: 18px 34px;
+  border-radius: 16px;
+  background: rgba(26, 27, 51, 0.85);
+  color: #FFFFFF;
+  font-size: 32px;
+  font-weight: 800;
+}
+@keyframes exposed-flash {
+  from { background: rgba(184, 31, 36, 0.2); }
+  to   { background: rgba(184, 31, 36, 0.5); }
+}
+
+/* ---------- Schermata scelta tempesta (f2-02) ---------- */
+.storm-box { padding: 8px 26px 24px; color: #1A1B33; }
+.storm-timer {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1A1B33;
+}
+.storm-track {
+  width: 226px;
+  height: 12px;
+  border-radius: 6px;
+  background: #1A0F33;
+  overflow: hidden;
+}
+.storm-fill { height: 100%; width: 100%; border-radius: 6px; background: #9A87D6; }
+.storm-cols {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 14px;
+}
+.storm-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 22px;
+}
+.storm-col h2 { font-size: 22px; font-weight: 800; color: #1A1B33; }
+.storm-col p { font-size: 21px; line-height: 28px; color: #1A1B33; }
+.storm-col p.good { color: #2E7D32; }
+.storm-col p.bad { color: #C0272D; }
+.storm-col b { font-weight: 800; }
+.storm-col .modal-btn { margin-top: auto; height: 77px; }
+
+/* ---------- Serra (f1-03 / f1-04) ---------- */
+.gh-screen {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  background: #E03A3A;
+  transition: background-color 0.4s;
+  overflow: hidden;
+}
+#topbar.gh-mode {
+  width: 1073px;
+  height: 73px;
+  background: #1A1B33;
+  border-bottom-right-radius: 12px;
+}
+
+.gh-plants {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1280px;
+  height: 510px;
+  overflow: hidden;
+}
+.gh-plant-wrap {
+  position: absolute;
+  bottom: -14px;
+  width: 200px;
+  height: 340px;
+}
+.gh-plant-wrap:nth-child(1) { left: 5px; }
+.gh-plant-wrap:nth-child(2) { left: 215px; }
+.gh-plant-wrap:nth-child(3) { left: 425px; }
+.gh-plant-wrap:nth-child(4) { left: 640px; }
+.gh-plant-wrap:nth-child(5) { left: 855px; }
+.gh-plant-wrap:nth-child(6) { left: 1070px; }
+.gh-plant { width: 100%; height: 100%; overflow: visible; }
+.gh-plant .leaf path, .gh-plant .stem-in { transition: fill 0.6s, stroke 0.6s; }
+.gh-plant .leaf { transition: transform 0.6s; }
+
+/* Semaforo luci */
+.gh-lights {
+  position: absolute;
+  left: 1171px;
+  top: 31px;
+  width: 75px;
+  height: 187px;
+  padding: 8px 0;
+  background: #A9A9A9;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 11;
+}
+.gh-light {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 4px solid #D9D9D9;
+}
+.gh-light-red   { background: #E52222; }
+.gh-light-green { background: #2EF02E; }
+.gh-light-blue  { background: #2222FA; }
+.gh-light.active { border-color: #3A0505; box-shadow: 0 0 0 2px #1A1B33; }
+.gh-light:hover { filter: brightness(1.1); }
+
+/* Pannello inferiore */
+.gh-panel {
+  position: absolute;
+  left: 0;
+  top: 510px;
+  width: 1280px;
+  height: 210px;
+  background: #B5B8D3;
+}
+.gh-inner {
+  position: absolute;
+  left: 13px;
+  top: 12px;
+  right: 13px;
+  bottom: 13px;
+  background: #D5D9E7;
+}
+.gh-bars {
+  position: absolute;
+  left: 30px;
+  top: 12px;
+  right: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+.gh-bar { width: 158px; }
+.gh-bar-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 800;
+  color: #1A1B33;
+  line-height: 16px;
+  margin-bottom: 3px;
+}
+.gh-track {
+  height: 11px;
+  border-radius: 6px;
+  background: #8F8F8F;
+  overflow: hidden;
+}
+.gh-fill {
+  height: 100%;
+  width: 0;
+  border-radius: 6px;
+  background: #6CB4EE;
+  transition: width 0.2s linear;
+}
+.gh-fill.low { background: #F2A65A; }
+
+.gh-back {
+  position: absolute;
+  left: 11px;
+  top: 95px;
+  width: 120px;
+  height: 77px;
+  border: none;
+  border-radius: 16px;
+  background: #B9A3F5;
+  color: #1A1B33;
+  font-size: 20px;
+  font-weight: 800;
+}
+.gh-back span { font-size: 26px; margin-right: 4px; }
+.gh-back:hover { background: #C8B6F8; }
+.gh-water {
+  position: absolute;
+  left: 454px;
+  top: 80px;
+  width: 345px;
+  height: 86px;
+  border: 3px solid #1A1B33;
+  border-radius: 32px;
+  background: #6CB4EE;
+  color: #FFFFFF;
+  font-size: 26px;
+  font-weight: 800;
+}
+.gh-water:hover:not(:disabled) { filter: brightness(1.08); }
+.gh-water.cooldown, .gh-water:disabled { background: #A8BCC8; cursor: not-allowed; }
+.gh-status {
+  position: absolute;
+  left: 830px;
+  top: 92px;
+  width: 400px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1A1B33;
+  line-height: 20px;
+}

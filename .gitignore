@@ -14,3 +14,4 @@ desktop.ini
 
 # Impostazioni locali di Claude Code
 .claude/settings.local.json
+tests/shot-*.png
