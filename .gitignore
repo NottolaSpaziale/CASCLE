@@ -2,7 +2,7 @@
 node_modules/
 
 # Artefatti dei test
-tests/screenshot.png
+tests/screenshot*.png
 tests/test-results/
 tests/playwright-report/
 
