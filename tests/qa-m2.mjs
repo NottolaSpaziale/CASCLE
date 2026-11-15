@@ -15,7 +15,7 @@ pg.on('pageerror', e => res.errors.push('pageerror: '+e.message));
 pg.on('response', r => { if (r.status() >= 400) res.failed.push(r.status()+' '+r.url()); });
 const crewProp = (id, s) => pg.evaluate(([id, s]) => game.state.crew.find(a => a.id === id)[s], [id, s]);
 try {
-  await pg.goto('http://localhost:8081/'); await sleep(800);
+  await pg.goto('http://localhost:8081/'); await pg.evaluate(() => { if (window.game && game.titleVisible) game.start(); }); await sleep(800);
   ck('mapImg', await pg.evaluate(() => { const i = document.querySelector('.map-img'); return i.complete && i.naturalWidth > 0; }));
   const labs = await pg.locator('.room-label').allInnerTexts(); ck('labels', labs.length >= 12, labs.length + ': ' + labs.join('|'));
   ck('rooms13', (await pg.locator('.room-area').count()) === 13);

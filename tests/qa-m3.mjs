@@ -15,7 +15,7 @@ async function open(q) {
   pg.on('console', m => { if (['error','warning'].includes(m.type())) res.errors.push(m.type()+': '+m.text()); });
   pg.on('pageerror', e => res.errors.push('pageerror: '+e.message));
   pg.on('response', r => { if (r.status() >= 400) res.failed.push(r.status()+' '+r.url()); });
-  await pg.goto('http://localhost:8083/' + q); await sleep(700); return pg;
+  await pg.goto('http://localhost:8083/' + q); await pg.evaluate(() => { if (window.game && game.titleVisible) game.start(); }); await sleep(700); return pg;
 }
 const modalText = pg => pg.locator('.modal-layer:not(.hidden) .modal').first().innerText().catch(() => '');
 try {

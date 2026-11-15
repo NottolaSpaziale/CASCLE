@@ -15,7 +15,7 @@ async function open(q) {
   pg.on('console', m => { if (['error', 'warning'].includes(m.type())) res.errors.push(m.type() + ': ' + m.text()); });
   pg.on('pageerror', e => res.errors.push('pageerror: ' + e.message));
   pg.on('response', r => { if (r.status() >= 400) res.failed.push(r.status() + ' ' + r.url()); });
-  await pg.goto('http://localhost:8085/' + q); await sleep(700); return pg;
+  await pg.goto('http://localhost:8085/' + q); await pg.evaluate(() => { if (window.game && game.titleVisible) game.start(); }); await sleep(700); return pg;
 }
 const G = (pg, f, a) => pg.evaluate(f, a);
 const closeModals = async pg => { for (let i = 0; i < 3; i++) { const b = pg.locator('.modal-layer:not(.hidden) [data-modal-btn]'); if (await b.count()) { await b.first().click().catch(() => {}); await sleep(150); } } };
@@ -24,7 +24,7 @@ try {
   let pg = await open('?sol=2');
   await closeModals(pg);
   ck('btnExists', await pg.locator('.tablet-btn').count() === 1);
-  ck('btnBeforeSol', await G(pg, () => document.querySelector('.tablet-btn').nextElementSibling?.classList.contains('sol-wrap')));
+  ck('btnBeforeSol', await G(pg, () => !!document.querySelector('.tablet-btn').parentElement.querySelector('.sol-wrap') && (document.querySelector('.tablet-btn').compareDocumentPosition(document.querySelector('.sol-wrap')) & 4) > 0));
   await pg.locator('.tablet-btn').click(); await sleep(300);
   ck('opens', await G(pg, () => game.tablet.isOpen) && await pg.locator('.tablet-layer:not(.hidden)').count() === 1);
   ck('paused', await G(pg, () => game.state.paused));

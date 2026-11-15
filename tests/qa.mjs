@@ -19,7 +19,7 @@ async function open(q = '', vp = { width: 1280, height: 720 }) {
   pg.on('pageerror', e => res.errors.push('pageerror: ' + e.message));
   pg.on('requestfailed', r => res.failedReqs.push(r.url()));
   pg.on('response', r => { if (r.status() >= 400) res.failedReqs.push(r.status() + ' ' + r.url()); });
-  await pg.goto('http://localhost:8080/' + q); await sleep(500); return pg;
+  await pg.goto('http://localhost:8080/' + q); await pg.evaluate(() => { if (window.game && game.titleVisible) game.start(); }); await sleep(500); return pg;
 }
 try {
   let pg = await open();
